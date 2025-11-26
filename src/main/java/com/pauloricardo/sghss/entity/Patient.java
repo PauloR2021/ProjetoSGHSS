@@ -16,7 +16,7 @@ public class Patient {
     private String name;
 
     @Column(unique = true)
-    private String cpd;
+    private String cpf;
 
     private String email;
     private String phone;
