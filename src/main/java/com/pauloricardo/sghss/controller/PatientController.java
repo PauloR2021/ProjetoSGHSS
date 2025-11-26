@@ -1,7 +1,8 @@
 package com.pauloricardo.sghss.controller;
 
 import com.pauloricardo.sghss.entity.Patient;
-import com.pauloricardo.sghss.services.*;
+import com.pauloricardo.sghss.service.*;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,24 +1,33 @@
-/*Classe responsável por criar a Tabelas do Banco para salvr a Prescrição */
 package com.pauloricardo.sghss.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Data
 @Entity
+@Data
 public class Prescription {
+
     @Id
     @GeneratedValue
     private UUID id;
 
     @ManyToOne
-    private Patient patient;
+    @JoinColumn(name = "appointment_id", nullable = false)
+    private Appointment appointment;
 
     @ManyToOne
-    private Professional professional;
+    @JoinColumn(name = "author_id", nullable = false)
+    private Professional author;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @Column(nullable = false)
+    private boolean signed;
+
+    @Column(nullable = false)
+    private OffsetDateTime createdAt;
 }

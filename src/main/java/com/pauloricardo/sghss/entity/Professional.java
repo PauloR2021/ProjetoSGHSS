@@ -1,5 +1,3 @@
-/*Classe responsável por criar a Tabela do Banco dos Médicos */
-
 package com.pauloricardo.sghss.entity;
 
 import jakarta.persistence.*;
@@ -21,5 +19,4 @@ public class Professional {
     private String crm;
 
     private String email;
-
 }

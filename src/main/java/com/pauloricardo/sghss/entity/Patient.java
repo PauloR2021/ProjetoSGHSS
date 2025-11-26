@@ -1,5 +1,3 @@
-/*Classe responsável por criar a Tabelas do Banco para dados dos Pacientes */
-
 package com.pauloricardo.sghss.entity;
 
 import jakarta.persistence.*;
@@ -9,6 +7,7 @@ import java.util.UUID;
 @Data
 @Entity
 public class Patient {
+
     @Id
     @GeneratedValue
     private UUID id;
@@ -20,5 +19,4 @@ public class Patient {
 
     private String email;
     private String phone;
-
 }
