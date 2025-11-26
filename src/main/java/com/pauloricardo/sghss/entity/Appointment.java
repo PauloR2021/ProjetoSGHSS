@@ -25,4 +25,6 @@ public class Appointment {
 
     private String status; // AGENDADA, CANCELADA, REALIZADA
 
+    private boolean telemedicine = false;
+
 }
