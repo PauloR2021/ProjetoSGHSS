@@ -29,10 +29,8 @@ public class JwtUtil {
     }
 
     public String generateToken(String username, List<String> roles) {
-
         Date now = new Date();
         Date exp = new Date(now.getTime() + expirationMs);
-
         return Jwts.builder()
                 .subject(username)
                 .claim("roles", roles)
@@ -49,7 +47,6 @@ public class JwtUtil {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-
         } catch (JwtException e) {
             throw new RuntimeException("Token inválido ou expirado");
         }

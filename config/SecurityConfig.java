@@ -1,6 +1,6 @@
-package com.pauloricardo.sghss.util;
+package com.pauloricardo.sghss.config;
 
-import com.pauloricardo.sghss.services.*;
+import com.pauloricardo.sghss.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

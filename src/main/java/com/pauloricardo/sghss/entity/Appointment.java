@@ -1,10 +1,8 @@
-/*Classe responsável por criar a Tabelas do Banco para salva a Consulta */
-
 package com.pauloricardo.sghss.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
@@ -15,16 +13,21 @@ public class Appointment {
     @GeneratedValue
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Patient patient;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Professional professional;
 
-    private LocalDateTime dateTime;
+    @Column(nullable = false)
+    private OffsetDateTime dateTime;
 
-    private String status; // AGENDADA, CANCELADA, REALIZADA
+    @Column(nullable = false)
+    private String status = "AGENDADA"; // AGENDADA, CANCELADA, REALIZADA
 
+    @Column(nullable = false)
     private boolean telemedicine = false;
 
+    @Column(nullable = false)
+    private boolean cancelled = false;
 }

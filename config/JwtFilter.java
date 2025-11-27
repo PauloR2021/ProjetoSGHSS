@@ -1,4 +1,4 @@
-package com.pauloricardo.sghss.util;
+package com.pauloricardo.sghss.config;
 
 import com.pauloricardo.sghss.util.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -29,16 +29,18 @@ public class JwtFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             try {
-                Claims claims = jwtUtil.validate(token).getBody();
+                Claims claims = jwtUtil.validate(token);
                 String username = claims.getSubject();
+                @SuppressWarnings("unchecked")
                 List<String> roles = claims.get("roles", List.class);
                 var auth = new UsernamePasswordAuthenticationToken(
                         username,
                         null,
-                        roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+                        roles == null ? List.of()
+                                : roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (Exception e) {
-                // invalid token
+                // token inválido — não autentica
             }
         }
         filterChain.doFilter(request, response);

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -20,25 +21,34 @@ public class AuthService {
 
     @Transactional
     public String registerAndGetToken(String username, String rawPassword, Set<String> roles) {
+
         if (userRepo.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("Usuário já existe");
         }
+
         AppUser u = new AppUser();
         u.setUsername(username);
         u.setPasswordHash(passwordEncoder.encode(rawPassword));
         u.setRoles(roles);
         u.setEnabled(true);
+
         userRepo.save(u);
-        return jwtUtil.generateToken(username); // generateToken can be adapted to accept roles if wanted
+
+        // JwtUtil aceita List<String>
+        return jwtUtil.generateToken(username, roles.stream().toList());
     }
 
     public String authenticateAndGetToken(String username, String rawPassword) {
+
         AppUser u = userRepo.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário ou senha inválidos"));
+
         if (!passwordEncoder.matches(rawPassword, u.getPasswordHash())) {
             throw new IllegalArgumentException("Usuário ou senha inválidos");
         }
-        return jwtUtil.generateToken(username); // if you want roles in token, adapt JwtUtil.generateToken to accept
-                                                // roles
+
+        return jwtUtil.generateToken(
+                username,
+                u.getRoles().stream().toList());
     }
 }

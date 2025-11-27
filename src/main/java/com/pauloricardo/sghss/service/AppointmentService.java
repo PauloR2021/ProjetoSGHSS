@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,72 +19,60 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class AppointmentService {
 
-    private final AppointmentRepository repo;
+    private final AppointmentRepository appointmentRepo;
     private final PatientRepository patientRepo;
     private final ProfessionalRepository professionalRepo;
 
     public List<Appointment> findAll() {
-        return repo.findAll();
+        return appointmentRepo.findAll();
     }
 
     public Appointment findById(UUID id) {
-        return repo.findById(id).orElse(null);
+        return appointmentRepo.findById(id).orElse(null);
     }
 
-    /**
-     * Agenda uma consulta. Faz validações simples:
-     * - paciente e profissional existem
-     * - não há outra consulta do mesmo profissional no mesmo horário (checagem
-     * simples)
-     */
     @Transactional
-    public Appointment schedule(UUID patientId, UUID professionalId, LocalDateTime dateTime, boolean telemedicine) {
+    public Appointment schedule(UUID patientId, UUID professionalId, OffsetDateTime dateTime, boolean telemedicine) {
+
         Patient patient = patientRepo.findById(patientId)
                 .orElseThrow(() -> new IllegalArgumentException("Paciente não encontrado"));
+
         Professional professional = professionalRepo.findById(professionalId)
                 .orElseThrow(() -> new IllegalArgumentException("Profissional não encontrado"));
 
-        // Checagem simples de conflito (mesmo profissional no mesmo horário)
-        boolean conflict = repo.findAll().stream()
-                .anyMatch(a -> a.getProfessional() != null
-                        && a.getProfessional().getId().equals(professionalId)
-                        && a.getDateTime() != null
-                        && a.getDateTime().equals(dateTime)
-                        && !"CANCELLED".equalsIgnoreCase(a.getStatus()));
+        Appointment ap = new Appointment();
+        ap.setPatient(patient);
+        ap.setProfessional(professional);
+        ap.setDateTime(dateTime);
+        ap.setTelemedicine(telemedicine);
+        ap.setCancelled(false);
 
-        if (conflict) {
-            throw new IllegalStateException("Profissional já tem consulta neste horário");
-        }
-
-        Appointment appointment = new Appointment();
-        appointment.setPatient(patient);
-        appointment.setProfessional(professional);
-        appointment.setDateTime(dateTime);
-        appointment.setStatus("SCHEDULED");
-        appointment.setTelemedicine(telemedicine);
-        return repo.save(appointment);
+        return appointmentRepo.save(ap);
     }
 
     @Transactional
     public Appointment update(UUID id, Appointment updated) {
-        Appointment exist = repo.findById(id)
+        Appointment ap = appointmentRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Consulta não encontrada"));
-        exist.setDateTime(updated.getDateTime());
-        exist.setStatus(updated.getStatus());
-        exist.setTelemedicine(updated.isTelemedicine());
-        return repo.save(exist);
+
+        ap.setDateTime(updated.getDateTime());
+        ap.setTelemedicine(updated.isTelemedicine());
+        ap.setCancelled(updated.isCancelled());
+
+        return appointmentRepo.save(ap);
     }
 
     @Transactional
     public void cancel(UUID id) {
-        Appointment exist = repo.findById(id)
+        Appointment ap = appointmentRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Consulta não encontrada"));
-        exist.setStatus("CANCELLED");
-        repo.save(exist);
+
+        ap.setCancelled(true);
+        appointmentRepo.save(ap);
     }
 
     @Transactional
     public void delete(UUID id) {
-        repo.deleteById(id);
+        appointmentRepo.deleteById(id);
     }
 }
