@@ -100,8 +100,8 @@ CREATE DATABASE sghss;
 
 ### 🧑‍⚕️ Patients
 ```
-
 GET /api/patients
+
 POST /api/patients
 {
   "name": "João Silva",
@@ -109,12 +109,15 @@ POST /api/patients
 }
 ```
 
-👨‍⚕️ Professionals
+### 👨‍⚕️ Professionals
+```
 GET /api/professionals
 POST /api/professionals
 PUT /api/professionals/{id}
+```
 
-📅 Appointments (Consultas)
+### 📅 Appointments (Consultas)
+```
 POST /api/appointments
 {
   "patientId": "UUID",
@@ -122,19 +125,25 @@ POST /api/appointments
   "dateTime": "2025-01-20T14:00:00-03:00",
   "telemedicine": false
 }
+```
 
-📁 Medical Records (Prontuários)
+### 📁 Medical Records (Prontuários)
+```
 POST /api/medical-records
 GET /api/medical-records/{id}
 PUT /api/medical-records/{id}
+```
 
-💊 Prescriptions (Prescrições)
+### 💊 Prescriptions (Prescrições)
+```
 POST /api/prescriptions
 POST /api/prescriptions/{id}/sign
+```
 
-🧪 Testes com Insomnia
+### 🧪 Testes com Insomnia
+```
 insomnia_sghss.json
-
+```
 
 ## 👤 Autor
 Paulo Ricardo Soares da Trindade
