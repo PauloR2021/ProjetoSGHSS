@@ -98,13 +98,16 @@ CREATE DATABASE sghss;
 ```
 ## 📌 Endpoints Principais
 
-🧑‍⚕️ Patients
+### 🧑‍⚕️ Patients
+```
+
 GET /api/patients
 POST /api/patients
 {
   "name": "João Silva",
   "cpf": "11122233344"
 }
+```
 
 👨‍⚕️ Professionals
 GET /api/professionals
