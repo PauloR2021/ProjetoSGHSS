@@ -98,5 +98,42 @@ CREATE DATABASE sghss;
 ```
 ## 📌 Endpoints Principais
 
+🧑‍⚕️ Patients
+GET /api/patients
+POST /api/patients
+{
+  "name": "João Silva",
+  "cpf": "11122233344"
+}
+
+👨‍⚕️ Professionals
+GET /api/professionals
+POST /api/professionals
+PUT /api/professionals/{id}
+
+📅 Appointments (Consultas)
+POST /api/appointments
+{
+  "patientId": "UUID",
+  "professionalId": "UUID",
+  "dateTime": "2025-01-20T14:00:00-03:00",
+  "telemedicine": false
+}
+
+📁 Medical Records (Prontuários)
+POST /api/medical-records
+GET /api/medical-records/{id}
+PUT /api/medical-records/{id}
+
+💊 Prescriptions (Prescrições)
+POST /api/prescriptions
+POST /api/prescriptions/{id}/sign
+
+🧪 Testes com Insomnia
+insomnia_sghss.json
 
 
+## 👤 Autor
+Paulo Ricardo Soares da Trindade
+Desenvolvedor Java 
+Projeto SGHSS criado para estudos e portfolio
