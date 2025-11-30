@@ -34,7 +34,7 @@ O SGHSS oferece recursos essenciais para gestão de uma unidade de saúde:
 ## 📂 Estrutura do Projeto
 
 ```
-Psghss/
+sghss/
  ├── src/main/java/com/pauloricardo/sghss/
  │    ├── controller/
  │    ├── entity/
